@@ -404,7 +404,7 @@ function draw()　{
           if (NMEs[i].x - 50*scaling < playerX && NMEs[i].x+50*scaling > playerX && NMEs[i].y - 50*scaling < playerY && NMEs[i].y+50*scaling > playerY && NMEs[i].health > 0 && !dash) { //if the enemy is close the the player
           if (!spike && !invincible) {  
             health -= 1; //player loses health
-            invincibility = max(30, invincibility);
+            invincibility = max(15, invincibility);
             invincible = true;
             NMEs.splice(i, 1); //deletes the enemy
             i--;

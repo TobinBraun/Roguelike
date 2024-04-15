@@ -750,12 +750,12 @@ function draw()　{
             maxHealth *= .75; 
             health = min(maxHealth, health)
             Speed *= 2; 
-            shootCooldown /= 1.15;
+            shootCooldown /= 1.5;
             break;
           case 1: //card is tank
             maxHealth *= 3;
             health *= 3;
-            Speed /= 1.75;
+            Speed /= 1.5;
             shootCooldown /= 1.5;
             damage *= 1.1;
             break;
@@ -780,7 +780,7 @@ function draw()　{
             break;
           case 5: //card is pierce
             pierce += 2;
-            damage *= 1.3;
+            damage *= 1.5;
             break;
           case 6: //card is magnet
             xpSpeed += 1.5;

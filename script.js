@@ -755,7 +755,7 @@ function draw()　{
           case 1: //card is tank
             maxHealth *= 3;
             health *= 3;
-            Speed /= 1.5;
+            Speed *= .75;
             shootCooldown /= 1.5;
             damage *= 1.25;
             break;

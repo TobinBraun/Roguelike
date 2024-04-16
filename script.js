@@ -757,7 +757,7 @@ function draw()　{
             health *= 3;
             Speed /= 1.5;
             shootCooldown /= 1.5;
-            damage *= 1.1;
+            damage *= 1.25;
             break;
           case 2: // card is vampire
             maxHealth *= 1.5;

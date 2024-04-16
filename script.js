@@ -156,7 +156,7 @@ function setup() {
 }
 function draw()　{
   background(230);
-  delta = deltaTime / (1000/60); //deltaTime is the time since the last frame in milliseconds. 1000/60 is the framerate in frames per second.  
+  delta = min(deltaTime / (1000/60), 2); //deltaTime is the time since the last frame in milliseconds. 1000/60 is the framerate in frames per second.  
   if(diffscaling != null) { //If the player has already chosen the difficulty
   if (!drawingCards){ //If the player is not drawing cards
     if (health > 0) { //If the player's health is above 0 (is alive)

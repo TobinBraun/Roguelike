@@ -765,6 +765,7 @@
               health = min(maxHealth, health)
               Speed *= 2; 
               shootCooldown /= 1.5;
+              healthScale *= .75;
               break;
             case 1: //card is tank
               maxHealth *= 5;
@@ -778,6 +779,7 @@
               maxHealth *= 1.5;
               health *= 1.5;
               leech += .05;
+              healthScale *= 1.5;
               break;
             case 3: // card is shotgun
               bulletsPerShot *= 4;

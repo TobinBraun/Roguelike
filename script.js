@@ -100,6 +100,7 @@ class NME {
     this.x = x;
     this.y = y;
     this.health = health;
+    this.speed = random(0.9, 1.05);
     this.type = type;
     this.id = id;
     id++;
@@ -379,8 +380,8 @@ function draw()　{
             angle = atan(y/x);
           }
           pos = pos.rotate(angle); //Math formula to rotate the enemy to move it towards the player
-          NMEs[i].x += pos.x;
-          NMEs[i].y += pos.y;
+          NMEs[i].x += pos.x*NMEs[i].speed;
+          NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) { //Goes through the list of bullets and checks if the enemy is touching a bullet
             if (bullets[ii].x > NMEs[i].x - 50*scaling && bullets[ii].x < NMEs[i].x+50*scaling && bullets[ii].y > NMEs[i].y - 50*scaling && bullets[ii].y < NMEs[i].y+50*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
               health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
@@ -404,7 +405,11 @@ function draw()　{
           if (NMEs[i].x - 50*scaling < playerX && NMEs[i].x+50*scaling > playerX && NMEs[i].y - 50*scaling < playerY && NMEs[i].y+50*scaling > playerY && NMEs[i].health > 0 && !dash) { //if the enemy is close the the player
           if (!spike && !invincible) {  
             health -= 1; //player loses health
-            invincibility = max(15, invincibility);
+            if (diffStatScale == .8) {
+              invincibility = max(15, invincibility); 
+            } else if (diffStatScale == .85) {
+              invincibility = max(5, incivibility);
+            }
             invincible = true;
             NMEs.splice(i, 1); //deletes the enemy
             i--;
@@ -441,8 +446,8 @@ function draw()　{
             angle = atan(y/x);
           }
           pos = pos.rotate(angle);
-          NMEs[i].x += pos.x;
-          NMEs[i].y += pos.y;
+          NMEs[i].x += pos.x*NMEs[i].speed;
+          NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) {
             if (bullets[ii].x > NMEs[i].x - 25*scaling && bullets[ii].x < NMEs[i].x+25*scaling && bullets[ii].y > NMEs[i].y - 25*scaling && bullets[ii].y < NMEs[i].y+25*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
               health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
@@ -466,7 +471,11 @@ function draw()　{
             if (NMEs[i].x - 25*scaling < playerX && NMEs[i].x+25*scaling > playerX && NMEs[i].y - 25*scaling < playerY && NMEs[i].y+25*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
               health -= 0.5;
-              invincibility = max(30, invincibility);
+              if (diffStatScale == .8) {
+                invincibility = max(15, invincibility); 
+              } else if (diffStatScale == .85) {
+                invincibility = max(5, incivibility);
+              }
               invincible = true;
               NMEs.splice(i, 1);
               i--;
@@ -505,8 +514,8 @@ function draw()　{
             angle = atan(y/x);
           }
           pos = pos.rotate(angle);
-          NMEs[i].x += pos.x;
-          NMEs[i].y += pos.y;
+          NMEs[i].x += pos.x*NMEs[i].speed;
+          NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) {
             if (bullets[ii].x > NMEs[i].x - 90*scaling && bullets[ii].x < NMEs[i].x+90*scaling && bullets[ii].y > NMEs[i].y - 90*scaling && bullets[ii].y < NMEs[i].y+90*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
               health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
@@ -530,7 +539,11 @@ function draw()　{
             if (NMEs[i].x - 90*scaling < playerX && NMEs[i].x+90*scaling > playerX && NMEs[i].y - 90*scaling < playerY && NMEs[i].y+90*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
               health -= 1;
-              invincibility = max(30, invincibility);
+              if (diffStatScale == .8) {
+                invincibility = max(15, invincibility); 
+              } else if (diffStatScale == .85) {
+                invincibility = max(5, incivibility);
+              }
               invincible = true;
               NMEs.splice(i, 1);
               i--;
@@ -725,7 +738,7 @@ function draw()　{
           spread += .1; //bullets spread out
           break;
         case 2: // card is healthy
-          maxHealth += 2*healthScale; //increases max health
+          maxHealth += 3*healthScale; //increases max health
           health = maxHealth; //sets health to max health
           break;
         case 3: // card is reaction time
@@ -753,7 +766,7 @@ function draw()　{
             shootCooldown /= 1.5;
             break;
           case 1: //card is tank
-            maxHealth *= 3;
+            maxHealth *= 5;
             health *= 3;
             Speed *= .75;
             shootCooldown /= 1.5;

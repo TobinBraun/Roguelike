@@ -753,9 +753,8 @@ function draw()　{
           break
         case 5: //card is well rounded
           damage *= 1.2;
-          health *= 1.25
-          maxHealth *= 1.25; 
-          healthScale *= 1.25;
+          health + 1*healthScale;
+          maxHealth += 1*healthScale; 
           Speed *= 1.1; //move faster
       }}
       else {

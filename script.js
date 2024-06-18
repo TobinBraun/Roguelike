@@ -42,6 +42,7 @@ let bulletsPerShot = 1;
 let rounds = 1;
 let roundsQued = 0;
 let roundTimer = 0;
+let bulletMultiplier;
 let pierce = 0;
 let spread = 0;
 let shootAngle;
@@ -72,7 +73,9 @@ let syringe = false;
 let dashCoolDown = 0;
 let dashDir;
 let id = 0;
-let bulletMultiplier;
+const numbers = ['4', '8', '1', '5', '1', '6', '2', '3', '4', '2'];
+let curSecretNumber = 0;
+let cheatsEnabled = false;
 
 const cards = [
   ["rapid fire", "rapidfire.jpg"],
@@ -157,6 +160,20 @@ function setup() {
     }
   }
 }
+
+window.onkeydown= function(e){  
+  if(String.fromCharCode(e.keyCode) === numbers[curSecretNumber]){  
+      if (curSecretNumber < 9) {
+        curSecretNumber++; 
+        console.log(curSecretNumber);
+      }
+      else {cheatsEnabled = true;}
+  } 
+  else if (String.fromCharCode(e.keyCode) != numbers[curSecretNumber] && String.fromCharCode(e.keyCode) != numbers[curSecretNumber-1]) {
+    curSecretNumber = 0;
+  }
+};  
+
 function draw()　{
   background(230);
   delta = min(deltaTime / (1000/60), 2); //deltaTime is the time since the last frame in milliseconds. 1000/60 is the framerate in frames per second.  
@@ -282,9 +299,9 @@ function draw()　{
         }
       }
     }
-    /*if (keyIsDown(69)){
+    if (keyIsDown(69) && cheatsEnabled){
       xp[0] = xp[1];
-    }*/
+    }
     mX = mouseX - width/2 -playerX - (translateX-width/2);
     mY = mouseY - height/2 -playerY - (translateY-height/2);
     if (mX > 0 && mY <= 0) {
@@ -843,6 +860,7 @@ function draw()　{
         diffStatScale = .9; //Multiplies all of the stats of the enemies by 1
       }
     } 
+    if () {}
   }
 }
 

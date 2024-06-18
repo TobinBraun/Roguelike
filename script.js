@@ -860,7 +860,6 @@ function draw()　{
         diffStatScale = .9; //Multiplies all of the stats of the enemies by 1
       }
     } 
-    if () {}
   }
 }
 

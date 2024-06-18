@@ -72,6 +72,7 @@ let syringe = false;
 let dashCoolDown = 0;
 let dashDir;
 let id = 0;
+let bulletMultiplier;
 
 const cards = [
   ["rapid fire", "rapidfire.jpg"],
@@ -305,7 +306,11 @@ function draw()　{
     }
     roundTimer = max(0, roundTimer-delta);
     if (roundsQued > 0 && roundTimer <= 0) {
-      for (i = 0; i < bulletsPerShot; i++) { //Repeats bulletsPerShot times
+      if (delta >= curCooldown*2) {
+        bulletMultiplier = floor(delta/curCooldown);
+      }
+      else {bulletMultiplier = 1;}
+      for (i = 0; i < bulletsPerShot*bulletMultiplier; i++) { //Repeats bulletsPerShot times
         pos.set(65*scaling*delta, 0).rotate(shootAngle); //Creates a vector2. Vectors are variables in the format of (x, y) coordinates. This means that they can be rotated around a point.
         //bullets.push([playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80))]); //If the spread variable is greater than 0, the bullet angle will be randomized based on spread and the bullets will travel in different directionsStores all the necessary information about the bullet in a list. This information is used later to create the bullets
         bullets.push(new Bullet(playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80)), damage, pierce));
@@ -317,7 +322,7 @@ function draw()　{
         }
       }
       roundsQued--;
-      roundTimer = 5/60*shootCooldown;
+      roundTimer = 3*5/60*shootCooldown/rounds;
     }
     fill(25, 50, 75);
     for (let i = 0; i < bullets.length; i++) { //This loop will go through all of the bullets stored in the list

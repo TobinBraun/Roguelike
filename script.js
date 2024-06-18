@@ -324,7 +324,7 @@ function draw()　{
     roundTimer = max(0, roundTimer-delta);
     if (roundsQued > 0 && roundTimer <= 0) {
       if (delta >= curCooldown*2) {
-        bulletMultiplier = floor(delta/curCooldown);
+        bulletMultiplier = max(floor(delta/curCooldown), 1);
       }
       else {bulletMultiplier = 1;}
       for (i = 0; i < bulletsPerShot*bulletMultiplier; i++) { //Repeats bulletsPerShot times

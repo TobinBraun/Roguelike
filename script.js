@@ -804,7 +804,7 @@ function draw()　{
             health *= 2;
             leech += .01;
             healthScale *= 2;
-            damageHealthScale += .25;
+            damageHealthScale += .15;
             break;
           case 3: // card is shotgun
             bulletsPerShot *= 4;

@@ -845,7 +845,7 @@ function draw()　{
       if (mouseIsPressed)
       {
         diffscaling = 1.0002; //Difficulty multiplies by 1.00015 60 times each second
-        diffStatScale = .8; //Multiplies all of the stats of the enemies by .85
+        diffStatScale = .85; //Multiplies all of the stats of the enemies by .85
       }
     }
     if (mouseX > width/2-424/2*scaling && mouseX < width/2+424/2*scaling && mouseY > height/2-132/2*scaling && mouseY < (height/2+132/2*scaling)) //if medium is chosen
@@ -853,15 +853,15 @@ function draw()　{
       if (mouseIsPressed)
       {
         diffscaling = 1.00025;//Difficulty multiplies by 1.0002 60 times each 
-        diffStatScale = .85; //Multiplies all of the stats of the enemies by .9
+        diffStatScale = .925; //Multiplies all of the stats of the enemies by .9
       }
     }
     if (mouseX < width-25*scaling && mouseX > width-449*scaling && mouseY > height/2-132/2*scaling && mouseY < (height/2+132/2*scaling)) //if hard is chosen
     {
       if (mouseIsPressed)
       {
-        diffscaling = 1.00032; //Difficulty multiplies by 1.00035 60 times each second
-        diffStatScale = .9; //Multiplies all of the stats of the enemies by 1
+        diffscaling = 1.00035; //Difficulty multiplies by 1.00035 60 times each second
+        diffStatScale = 1; //Multiplies all of the stats of the enemies by 1
       }
     } 
   }

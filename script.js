@@ -43,6 +43,8 @@ let rounds = 1;
 let roundsQued = 0;
 let roundTimer = 0;
 let bulletMultiplier;
+let shootCooldownSpeedScale = 0;
+let damageHealthScale = 0;
 let pierce = 0;
 let spread = 0;
 let shootAngle;
@@ -332,7 +334,7 @@ function draw()　{
         //bullets.push([playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80))]); //If the spread variable is greater than 0, the bullet angle will be randomized based on spread and the bullets will travel in different directionsStores all the necessary information about the bullet in a list. This information is used later to create the bullets
         bullets.push(new Bullet(playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80)), damage, pierce));
         if (!syringe) {
-          curCooldown = shootCooldown; //Resets the cooldown
+          curCooldown = shootCooldown/(shootCooldownSpeedScale*(Speed/4)+1); //Resets the cooldown
         }
         else {
           curCooldown = shootCooldown/2;
@@ -407,8 +409,8 @@ function draw()　{
           NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) { //Goes through the list of bullets and checks if the enemy is touching a bullet
             if (bullets[ii].x > NMEs[i].x - 50*scaling && bullets[ii].x < NMEs[i].x+50*scaling && bullets[ii].y > NMEs[i].y - 50*scaling && bullets[ii].y < NMEs[i].y+50*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
-              health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
-              NMEs[i].health -= damage*damageMultiplier; //if the enemy touches the bullet, the enemy takes damage
+              health = min(maxHealth, health + max(min(NMEs[i].health, (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier)*leech, 0));
+              NMEs[i].health -= (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier; //if the enemy touches the bullet, the enemy takes damage
               if (bullets[ii].pierces > 0) {
                 bullets[ii].pierces--; 
                 bullets[ii].NMEsHit.push(NMEs[i].id); 
@@ -473,8 +475,8 @@ function draw()　{
           NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) {
             if (bullets[ii].x > NMEs[i].x - 25*scaling && bullets[ii].x < NMEs[i].x+25*scaling && bullets[ii].y > NMEs[i].y - 25*scaling && bullets[ii].y < NMEs[i].y+25*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
-              health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
-              NMEs[i].health -= bullets[ii].damage*damageMultiplier;
+              health = min(maxHealth, health + max(min(NMEs[i].health, (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier)*leech, 0));
+              NMEs[i].health -= (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier;
               if (bullets[ii].pierces > 0) {
                 bullets[ii].pierces--; 
                 bullets[ii].NMEsHit.push(NMEs[i].id); 
@@ -541,8 +543,8 @@ function draw()　{
           NMEs[i].y += pos.y*NMEs[i].speed;
           for (ii = 0; ii < bullets.length; ii++) {
             if (bullets[ii].x > NMEs[i].x - 90*scaling && bullets[ii].x < NMEs[i].x+90*scaling && bullets[ii].y > NMEs[i].y - 90*scaling && bullets[ii].y < NMEs[i].y+90*scaling && !bullets[ii].NMEsHit.includes(NMEs[i].id)) {
-              health = min(maxHealth, health + max(min(NMEs[i].health, bullets[ii].damage*damageMultiplier)*leech, 0));
-              NMEs[i].health -= bullets[ii].damage*damageMultiplier;
+              health = min(maxHealth, health + max(min(NMEs[i].health, (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier)*leech, 0));
+              NMEs[i].health -= (bullets[ii].damage+damageHealthScale*NMEs[i].health)*damageMultiplier;
               if (bullets[ii].pierces > 0) {
                 bullets[ii].pierces--; 
                 bullets[ii].NMEsHit.push(NMEs[i].id); 
@@ -784,23 +786,25 @@ function draw()　{
           case 0: //if the card is lightweight
             maxHealth *= .75; 
             health = min(maxHealth, health)
-            Speed *= 2; 
+            Speed *= 1.5; 
             shootCooldown /= 1.5;
             healthScale *= .75;
+            shootCooldownSpeedScale += 1;
             break;
           case 1: //card is tank
             maxHealth *= 5;
             health *= 5;
             Speed *= .75;
-            shootCooldown /= 1.5;
-            damage *= 1.25;
+            shootCooldown *= 1.1;
+            damage *= 3;
             healthScale *= 5;
             break;
           case 2: // card is vampire
-            maxHealth *= 1.5;
-            health *= 1.5;
+            maxHealth *= 2;
+            health *= 2;
             leech += .05;
-            healthScale *= 1.5;
+            healthScale *= 2;
+            damageHealthScale += .25;
             break;
           case 3: // card is shotgun
             bulletsPerShot *= 4;

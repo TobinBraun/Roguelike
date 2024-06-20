@@ -25,6 +25,7 @@ let spawnCooldown = 300;
 let spawnPosX;
 let spawnPosY;
 let NMEs = []; // NME is short for Enemy
+const NMEtypes = ["red", "blue", "yellow", "black"];
 let bullets = [];
 let xpOrb = [];
 let xp = [0, 1000];
@@ -104,12 +105,13 @@ const abilityCards = [
 ];
 
 class NME {
-  constructor(x, y, health, type) {
+  constructor(x, y, health, type, level) {
     this.x = x;
     this.y = y;
     this.health = health;
     this.speed = random(0.9, 1.05);
     this.type = type;
+    this.level = level;
     this.id = id;
     id++;
   }
@@ -871,6 +873,8 @@ function draw()　{
 
 function SpawnEnemies() {
   while (credits > 450) { //Keeps spawning enemies until there isn't enough credits to spawn any
+    let xSpawnPos;
+    let ySpawnPos;
     switch(ceil(credits > 1500 ? random(3) : credits > 1000? random(2) : 1)) { //Chooses between 3 types of enemies
       case 1: //Normal enemies
         spawnPosX = random(-.4, .4);
@@ -879,37 +883,46 @@ function SpawnEnemies() {
         {
           case 1: //Spawn enemy on top edge of screen
               if (playerY - 80*scaling - height/2 > -1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-40*scaling, height/2-40*scaling), 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-40*scaling, height/2-40*scaling);
                 }
               else { //Spawns enemy on bottom edge of screen if top edge is outside of border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+40*scaling, -height/2+40*scaling), 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+40*scaling, -height/2+40*scaling);
                 }
             break;
             case 2: //Spawns enemy on left side of screen
               if (playerX - 80*scaling - width/2 > -1.5*width) {
-                  NMEs.push(new NME(min(playerX-width/2-40*scaling, width/2-40*scaling), -1*(translateY-height/2)-spawnPosY*width, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = min(playerX-width/2-40*scaling, width/2-40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*width;
                 }
               else { //Spawns enemy on right side of screen if left side is out of bounds
-                  NMEs.push(new NME(max(playerX+width/2+40*scaling, -width/2+40*scaling), -1*(translateY-height/2)-spawnPosY*height, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = max(playerX+width/2+40*scaling, -width/2+40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
             case 3: //Spawns enemey at bottom of screen
               if (playerY + 80*scaling +height/2 < 1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+40*scaling, -height/2+40*scaling), 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+40*scaling, -height/2+40*scaling);
                 }
               else { //Spawns enemy at top of screen if the bottom is outside of the border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-40*scaling, height/2-40*scaling), 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-40*scaling, height/2-40*scaling);
                 }
             break;
             case 4: //Spawns enemy at the right side of the screen
               if (playerX + 80*scaling + width/2 < 1.5*width) {
-                  NMEs.push(new NME(max(playerX+width/2+40*scaling, -width/2+40*scaling), -1*(translateY-height/2)-spawnPosY*height, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1));
+                xSpawnPos = max(playerX+width/2+40*scaling, -width/2+40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
               else { //Spawns enemy at left side of the screen if right side is out of bounds
-                  NMEs.push(new NME(min(playerX-width/2-40*scaling, width/2-40*scaling), -1*(translateY-height/2)-spawnPosY*height, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1))
+                xSpawnPos = min(playerX-width/2-40*scaling, width/2-40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
         }
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1))
         credits -= 450; //spends 450 credits
         break;
       case 2: //Small, fast enemies
@@ -919,37 +932,46 @@ function SpawnEnemies() {
         {
           case 1: //Spawn enemy on top edge of screen
               if (playerY - 80*scaling - height/2 > -1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-40*scaling, height/2-40*scaling)));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-40*scaling, height/2-40*scaling);
                 }
               else { //Spawns enemy on bottom edge of screen if top edge is outside of border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+40*scaling, -height/2+40*scaling), 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+40*scaling, -height/2+40*scaling);
                 }
             break;
             case 2: //Spawns enemy on left side of screen
               if (playerX - 80*scaling - width/2 > -1.5*width) {
-                  NMEs.push(new NME(min(playerX-width/2-40*scaling, width/2-40*scaling), -1*(translateY-height/2)-spawnPosY*width, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = min(playerX-width/2-40*scaling, width/2-40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*width;
                 }
               else { //Spawns enemy on right side of screen if left side is out of bounds
-                  NMEs.push(new NME(max(playerX+width/2+40*scaling, -width/2+40*scaling), -1*(translateY-height/2)-spawnPosY*height, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = max(playerX+width/2+40*scaling, -width/2+40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
             case 3: //Spawns enemey at bottom of screen
               if (playerY + 80*scaling +height/2 < 1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+40*scaling, -height/2+40*scaling), 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+40*scaling, -height/2+40*scaling);
                 }
               else { //Spawns enemy at top of screen if the bottom is outside of the border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-40*scaling, height/2-40*scaling), 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-40*scaling, height/2-40*scaling);
                 }
             break;
             case 4: //Spawns enemy at the right side of the screen
               if (playerX + 80*scaling + width/2 < 1.5*width) {
-                  NMEs.push(new NME(max(playerX+width/2+40*scaling, -width/2+40*scaling), -1*(translateY-height/2)-spawnPosY*height, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = max(playerX+width/2+40*scaling, -width/2+40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
               else { //Spawns enemy at left side of the screen if right side is out of bounds
-                NMEs.push(new NME(min(playerX-width/2-40*scaling, width/2-40*scaling), -1*(translateY-height/2)-spawnPosY*height, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
+                xSpawnPos = min(playerX-width/2-40*scaling, width/2-40*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
         }
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
         credits -= 1000; //spends 1000 credits
         break;
         case 3: //Big, slow enemies
@@ -959,37 +981,46 @@ function SpawnEnemies() {
         {
           case 1: //Spawn enemy on top edge of screen
               if (playerY - 120*scaling - height/2 > -1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-80*scaling, height/2-80*scaling), 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-80*scaling, height/2-80*scaling);
                 }
               else { //Spawns enemy on bottom edge of screen if top edge is outside of border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+80*scaling, -height/2+80*scaling), 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+80*scaling, -height/2+80*scaling);
                 }
             break;
             case 2: //Spawns enemy on left side of screen
               if (playerX - 120*scaling - width/2 > -1.5*width) {
-                  NMEs.push(new NME(min(playerX-width/2-80*scaling, width/2-80*scaling), -1*(translateY-height/2)-spawnPosY*width, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = min(playerX-width/2-80*scaling, width/2-80*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*width;
                 }
               else { //Spawns enemy on right side of screen if left side is out of bounds
-                  NMEs.push(new NME(max(playerX+width/2+80*scaling, -width/2+80*scaling), -1*(translateY-height/2)-spawnPosY*height, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = max(playerX+width/2+80*scaling, -width/2+80*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
             case 3: //Spawns enemey at bottom of screen
               if (playerY + 120*scaling +height/2 < 1.5*height) {
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, max(playerY+height/2+80*scaling, -height/2+80*scaling), 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3))
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = max(playerY+height/2+80*scaling, -height/2+80*scaling);
                 }
               else { //Spawns enemy at top of screen if the bottom is outside of the border
-                  NMEs.push(new NME(-1*(translateX-width/2)+spawnPosX*width, min(playerY-height/2-80*scaling, height/2-80*scaling), 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = -1*(translateX-width/2)+spawnPosX*width;
+                ySpawnPos = min(playerY-height/2-80*scaling, height/2-80*scaling);
                 }
             break;
             case 4: //Spawns enemy at the right side of the screen
               if (playerX + 120*scaling + width/2 < 1.5*width) {
-                  NMEs.push(new NME(max(playerX+width/2+80*scaling, -width/2+80*scaling), -1*(translateY-height/2)-spawnPosY*height, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = max(playerX+width/2+80*scaling, -width/2+80*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
               else { //Spawns enemy at left side of the screen if right side is out of bounds
-                  NMEs.push(new NME(min(playerX-width/2-80*scaling, width/2-80*scaling), -1*(translateY-height/2)-spawnPosY*height, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
+                xSpawnPos = min(playerX-width/2-80*scaling, width/2-80*scaling);
+                ySpawnPos = -1*(translateY-height/2)-spawnPosY*height;
                 }
             break;
         }
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
         credits -= 1500; //spends 1500 credits
         break;
     }

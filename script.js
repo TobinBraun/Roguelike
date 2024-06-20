@@ -51,6 +51,7 @@ let shootAngle;
 let damage = 2;
 let damageMultiplier = 1;
 let leech = 0;
+let leechScale = 0;
 let mX; //mouseX
 let mY; //mouseY
 let pos;
@@ -179,6 +180,7 @@ window.onkeydown= function(e){
 function draw()　{
   background(230);
   delta = min(deltaTime / (1000/60), 2); //deltaTime is the time since the last frame in milliseconds. 1000/60 is the framerate in frames per second.  
+  leechScale = leech/difficulty;
   if(diffscaling != null) { //If the player has already chosen the difficulty
   if (!drawingCards){ //If the player is not drawing cards
     if (health > 0) { //If the player's health is above 0 (is alive)
@@ -802,7 +804,7 @@ function draw()　{
           case 2: // card is vampire
             maxHealth *= 2;
             health *= 2;
-            leech += .01;
+            leech += .05;
             healthScale *= 2;
             damageHealthScale += .15;
             break;

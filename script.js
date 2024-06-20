@@ -334,7 +334,7 @@ function draw()　{
         //bullets.push([playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80))]); //If the spread variable is greater than 0, the bullet angle will be randomized based on spread and the bullets will travel in different directionsStores all the necessary information about the bullet in a list. This information is used later to create the bullets
         bullets.push(new Bullet(playerX + pos.x, playerY + pos.y, random(shootAngle - min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80), shootAngle + min(max(360*spread/2, 2.5*bulletsPerShot-2.5), 80)), damage, pierce));
         if (!syringe) {
-          curCooldown = shootCooldown/(shootCooldownSpeedScale*(Speed/4)+1); //Resets the cooldown
+          curCooldown = shootCooldown/(shootCooldownSpeedScale*((Speed*speedMultiplier)/4)+1); //Resets the cooldown
         }
         else {
           curCooldown = shootCooldown/2;

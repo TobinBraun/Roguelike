@@ -778,10 +778,10 @@ function draw()　{
           spread -= .2; //bullets spread out less
           break
         case 5: //card is well rounded
-          damage *= 1.2;
+          damage *= 1.5;
+          maxHealth += 1*healthScale;
           health + 1*healthScale;
-          maxHealth += 1*healthScale; 
-          Speed *= 1.1; //move faster
+          Speed *= 1.15; //move faster
       }}
       else {
         switch (chosenCard) {

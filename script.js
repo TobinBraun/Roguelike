@@ -812,7 +812,7 @@ function draw()　{
             bulletsPerShot *= 4;
             shootCooldown *= 3; 
             rounds += 2;
-            damage *= .75;
+            damage *= .85;
             break;
           case 4: //card is glass cannon
             damage *= 2; //double damage

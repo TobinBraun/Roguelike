@@ -621,7 +621,7 @@ function draw()　{
       }
     }
     difficulty = pow(diffscaling, deltaSum); //difficulty increases by diffscaling so that the difficulty goes up exponentially
-    NMEHealthScale += delta/600*pow(diffStatScale, 2);
+    NMEHealthScale += delta/600*diffStatScale;
     if (xp[0] >= xp[1]) { //if current xp in level is greater than amount needed to level up
       level ++;
       xp[0] -= xp[1]; //current xp in level decreases by amount needed to level up

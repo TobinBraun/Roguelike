@@ -339,7 +339,7 @@ function draw()　{
           curCooldown = shootCooldown/(shootCooldownSpeedScale*((Speed*speedMultiplier)/4)+1); //Resets the cooldown
         }
         else {
-          curCooldown = shootCooldown/2;
+          curCooldown = shootCooldown/2/(shootCooldownSpeedScale*((Speed*speedMultiplier)/4)+1);;
         }
       }
       roundsQued--;

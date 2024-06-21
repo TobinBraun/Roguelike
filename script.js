@@ -25,7 +25,7 @@ let spawnCooldown = 300;
 let spawnPosX;
 let spawnPosY;
 let NMEs = []; // NME is short for Enemy
-const NMEtypes = ["red", "blue", "yellow", "black"];
+const NMEtypes = ["red", "grey", "blue", "yellow", "black"];
 let bullets = [];
 let xpOrb = [];
 let xp = [0, 1000];
@@ -105,13 +105,23 @@ const abilityCards = [
 ];
 
 class NME {
-  constructor(x, y, health, type, level) {
+  constructor(x, y, type, level) {
     this.x = x;
     this.y = y;
-    this.health = health;
     this.speed = random(0.9, 1.05);
     this.type = type;
     this.level = level;
+    switch(this.type) {
+      case 1:
+        this.health = (5*((NMEHealthScale-1)/1.5+1)*diffStatScale)*Math.pow(25, this.level);
+        break;
+      case 2:
+        this.health = (1*((NMEHealthScale-1)+1)*diffStatScale)*Math.pow(25, this.level);
+        break;
+      case 3:
+        this.health = (12*((NMEHealthScale-1)*2+1)*diffStatScale)*Math.pow(25, this.level);
+        break;
+    }
     this.id = id;
     id++;
   }
@@ -170,7 +180,7 @@ window.onkeydown= function(e){
   if(String.fromCharCode(e.keyCode) === numbers[curSecretNumber]){  
       if (curSecretNumber < 9) {
         curSecretNumber++; 
-        console.log(curSecretNumber);
+        //console.log(curSecretNumber);
       }
       else {cheatsEnabled = true;}
   } 
@@ -424,7 +434,7 @@ function draw()　{
                 ii--; //decreases ii so that the loop doesn't skip over a bullet because one was deleted
               }
               if (NMEs[i].health <= 0) { //if enemy health is 0
-                xpOrb.push([NMEs[i].x, NMEs[i].y, 450]); //creates xp orb at the enemy position
+                xpOrb.push([NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
                 NMEs.splice(i, 1); //deletes the enemy
                 i--;
                 continue NMELoop;
@@ -434,9 +444,9 @@ function draw()　{
           if (NMEs[i].x - 50*scaling < playerX && NMEs[i].x+50*scaling > playerX && NMEs[i].y - 50*scaling < playerY && NMEs[i].y+50*scaling > playerY && NMEs[i].health > 0 && !dash) { //if the enemy is close the the player
           if (!spike && !invincible) {  
             health -= 1; //player loses health
-            if (diffStatScale == .8) {
+            if (diffStatScale == .85) {
               invincibility = max(15, invincibility); 
-            } else if (diffStatScale == .85) {
+            } else if (diffStatScale == .925) {
               invincibility = max(5, incivibility);
             }
             invincible = true;
@@ -447,17 +457,27 @@ function draw()　{
           else if (spike) {
             health = min(maxHealth, health + max(NMEs[i].health*leech, 0));
             NMEs[i].health = 0;
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 450]); //creates xp orb at the enemy position
+            xpOrb.push([NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
             NMEs.splice(i, 1); //deletes the enemy
             i--;
             continue NMELoop;
           }
           else {
+            fill(NMEtypes[NMEs[i].level]);
+            if (NMEs[i].level == 4) {
+              stroke("white");
+            }
             rect(NMEs[i].x, NMEs[i].y, 80*scaling);
+            stroke("black");
           }
         }
           else {
+            fill(NMEtypes[NMEs[i].level]);
+            if (NMEs[i].level == 4) {
+              stroke("white");
+            }
             rect(NMEs[i].x, NMEs[i].y, 80*scaling); // if the enemy doesn't get deleted, draws the enemy
+            stroke("black");
           }
         break;
         case 2: //small enemies
@@ -492,7 +512,7 @@ function draw()　{
             }
           } 
           if (NMEs[i].health <= 0) {
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 500]);
+            xpOrb.push([NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level)]);
             NMEs.splice(i, 1);
             i--;
           }
@@ -500,9 +520,9 @@ function draw()　{
             if (NMEs[i].x - 25*scaling < playerX && NMEs[i].x+25*scaling > playerX && NMEs[i].y - 25*scaling < playerY && NMEs[i].y+25*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
               health -= 0.5;
-              if (diffStatScale == .8) {
+              if (diffStatScale == .85) {
                 invincibility = max(15, invincibility); 
-              } else if (diffStatScale == .85) {
+              } else if (diffStatScale == .925) {
                 invincibility = max(5, incivibility);
               }
               invincible = true;
@@ -513,16 +533,22 @@ function draw()　{
             else if (spike) {
               health = min(maxHealth, health + max(NMEs[i].health*leech, 0));
               NMEs[i].health = 0;
-              xpOrb.push([NMEs[i].x, NMEs[i].y, 500]); //creates xp orb at the enemy position
+              xpOrb.push([NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
               NMEs.splice(i, 1); //deletes the enemy
               i--;
               continue NMELoop;
             }
             else {
+              fill(NMEtypes[NMEs[i].level]);
+              if (NMEs[i].level == 4) {
+                stroke("white");
+              }
               rect(NMEs[i].x, NMEs[i].y, 30*scaling);
+              stroke("black");
             }
           }
             else {
+              fill(NMEtypes[NMEs[i].level]);
               rect(NMEs[i].x, NMEs[i].y, 30*scaling);
             }
           }
@@ -560,7 +586,7 @@ function draw()　{
             }
           } 
           if (NMEs[i].health <= 0) {
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 3000]);
+            xpOrb.push([NMEs[i].x, NMEs[i].y, 3000*Math.pow(15, NMEs[i].level)]);
             NMEs.splice(i, 1);
             i--;
           }
@@ -568,9 +594,9 @@ function draw()　{
             if (NMEs[i].x - 90*scaling < playerX && NMEs[i].x+90*scaling > playerX && NMEs[i].y - 90*scaling < playerY && NMEs[i].y+90*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
               health -= 1;
-              if (diffStatScale == .8) {
+              if (diffStatScale == .85) {
                 invincibility = max(15, invincibility); 
-              } else if (diffStatScale == .85) {
+              } else if (diffStatScale == .925) {
                 invincibility = max(5, incivibility);
               }
               invincible = true;
@@ -579,11 +605,21 @@ function draw()　{
               continue NMELoop;
             }
             else {
+              fill(NMEtypes[NMEs[i].level]);
+              if (NMEs[i].level == 4) {
+                stroke("white");
+              }
               rect(NMEs[i].x, NMEs[i].y, 160*scaling);
+              stroke("black");
             }
           }
             else {
+              fill(NMEtypes[NMEs[i].level]);
+              if (NMEs[i].level == 4) {
+                stroke("white");
+              }
               rect(NMEs[i].x, NMEs[i].y, 160*scaling);
+              stroke("black");
             }
           }
         break;
@@ -697,10 +733,20 @@ function draw()　{
         cardChoices[i] = i;
       }
       else if (level % 5 != 0 && level != 1) {
-        cardChoices[i] = ceil(random(cards.length))-1;
+        cardChoices[i] = ceil(random(cards.length-i))-1;
+        for (let ii = 0; ii < i; ii++) {
+          if (cardChoices[i] >= cardChoices[ii]) {
+            cardChoices[i] += 1;
+          }
+        }
       } //randomly selects a card from the list of cards
       else {
-        cardChoices[i] = ceil(random(goldCards.length))-1;
+        cardChoices[i] = ceil(random(goldCards.length-i))-1;
+        for (let ii = 0; ii < i; ii++) {
+          if (cardChoices[i] >= cardChoices[ii]) {
+            cardChoices[i] += 1;
+          }
+        }
       }
     }
     if (level == 5) {
@@ -820,8 +866,8 @@ function draw()　{
             damage *= 2; //double damage
             maxHealth /= 2; //half health
             health = maxHealth; //sets health to max health
-            shootCooldown /= 1.1; //shoot faster
-            Speed *= 1.1; //move faster
+            shootCooldown /= 1.5; //shoot faster
+            Speed *= 1.2; //move faster
             healthScale /= 2; //This means that every time your max health increases you will get half as much more max health
             break;
           case 5: //card is pierce
@@ -875,6 +921,7 @@ function SpawnEnemies() {
   while (credits > 450) { //Keeps spawning enemies until there isn't enough credits to spawn any
     let xSpawnPos;
     let ySpawnPos;
+    let NMESpawnLevel = 0;
     switch(ceil(credits > 1500 ? random(3) : credits > 1000? random(2) : 1)) { //Chooses between 3 types of enemies
       case 1: //Normal enemies
         spawnPosX = random(-.4, .4);
@@ -922,8 +969,21 @@ function SpawnEnemies() {
                 }
             break;
         }
-        NMEs.push(new NME(xSpawnPos, ySpawnPos, 5*((NMEHealthScale-1)/1.5+1)*diffStatScale, 1))
-        credits -= 450; //spends 450 credits
+        /*if (credits > 450000) {
+          NMESpawnLevel = 3;
+        }
+        else if (credits > 45000) {
+          NMESpawnLevel = 2;
+        }
+        else if (credits > 4500) {
+          NMESpawnLevel = 1
+        }
+        else {
+          NMESpawnLevel = 0;
+        }*/
+        NMESpawnLevel = min(floor(Math.log10(credits/450)), 4);
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 1, NMESpawnLevel));
+        credits -= 450*Math.pow(10, NMESpawnLevel); //spends 450 credits
         break;
       case 2: //Small, fast enemies
         spawnPosX = random(-.45, .45);
@@ -971,8 +1031,9 @@ function SpawnEnemies() {
                 }
             break;
         }
-        NMEs.push(new NME(xSpawnPos, ySpawnPos, 1*((NMEHealthScale-1)+1)*diffStatScale, 2));
-        credits -= 1000; //spends 1000 credits
+          NMESpawnLevel = min(floor(Math.log10(credits/1000)), 4);
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 2, NMESpawnLevel));
+        credits -= 1000*Math.pow(10, NMESpawnLevel); //spends 1000 credits
         break;
         case 3: //Big, slow enemies
         spawnPosX = random(-.4, .4);
@@ -1020,8 +1081,9 @@ function SpawnEnemies() {
                 }
             break;
         }
-        NMEs.push(new NME(xSpawnPos, ySpawnPos, 12*((NMEHealthScale-1)*2+1)*diffStatScale, 3));
-        credits -= 1500; //spends 1500 credits
+        NMESpawnLevel = min(floor(Math.log10(credits/1500)), 4);
+        NMEs.push(new NME(xSpawnPos, ySpawnPos, 3, NMESpawnLevel));
+        credits -= 1500*Math.pow(10, NMESpawnLevel); //spends 1500 credits
         break;
     }
   }

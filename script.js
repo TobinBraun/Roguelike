@@ -839,7 +839,7 @@ function draw()　{
             Speed *= 1.5; 
             shootCooldown /= 1.5;
             healthScale *= .75;
-            shootCooldownSpeedScale += 1;
+            shootCooldownSpeedScale += .8;
             break;
           case 1: //card is tank
             maxHealth *= 5;

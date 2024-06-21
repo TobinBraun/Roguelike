@@ -846,7 +846,7 @@ function draw()　{
             health *= 5;
             Speed *= .75;
             shootCooldown *= 1.1;
-            damage *= 3;
+            damage *= 4;
             healthScale *= 5;
             break;
           case 2: // card is vampire

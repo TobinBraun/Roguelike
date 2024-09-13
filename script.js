@@ -113,14 +113,17 @@ class NME {
     this.level = level;
     switch(this.type) {
       case 1:
-        this.health = (5*((NMEHealthScale-1)/1.5+1)*diffStatScale)*Math.pow(25, this.level);
+        this.health = (5*((NMEHealthScale-1)/1.5+1)*diffStatScale)*Math.pow(30, this.level);
         break;
       case 2:
-        this.health = (1*((NMEHealthScale-1)+1)*diffStatScale)*Math.pow(25, this.level);
+        this.health = (1*((NMEHealthScale-1)+1)*diffStatScale)*Math.pow(30, this.level);
         break;
       case 3:
-        this.health = (12*((NMEHealthScale-1)*2+1)*diffStatScale)*Math.pow(25, this.level);
+        this.health = (12*((NMEHealthScale-1)*2+1)*diffStatScale)*Math.pow(30, this.level);
         break;
+    }
+    if (diffStatScale == 1) {
+      this.health = Math.pow(this.health, 1.15);
     }
     this.id = id;
     id++;

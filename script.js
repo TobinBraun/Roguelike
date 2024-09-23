@@ -446,7 +446,7 @@ function draw()　{
           } 
           if (NMEs[i].x - 50*scaling < playerX && NMEs[i].x+50*scaling > playerX && NMEs[i].y - 50*scaling < playerY && NMEs[i].y+50*scaling > playerY && NMEs[i].health > 0 && !dash) { //if the enemy is close the the player
           if (!spike && !invincible) {  
-            health -= 1*NMEs[i].level; //player loses health
+            health -= 1*(NMEs[i].level+1); //player loses health
             if (diffStatScale == .85) {
               invincibility = max(15, invincibility); 
             } else if (diffStatScale == .925) {
@@ -522,7 +522,7 @@ function draw()　{
           else {
             if (NMEs[i].x - 25*scaling < playerX && NMEs[i].x+25*scaling > playerX && NMEs[i].y - 25*scaling < playerY && NMEs[i].y+25*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
-              health -= 0.5 * NMEs[i].level;
+              health -= 0.5 * (NMEs[i].level+1);
               if (diffStatScale == .85) {
                 invincibility = max(15, invincibility); 
               } else if (diffStatScale == .925) {
@@ -596,7 +596,7 @@ function draw()　{
           else {
             if (NMEs[i].x - 90*scaling < playerX && NMEs[i].x+90*scaling > playerX && NMEs[i].y - 90*scaling < playerY && NMEs[i].y+90*scaling > playerY && NMEs[i].health > 0 && !dash) {
             if (!spike && !invincible) {
-              health -= 1.5 * NMEs[i].level;
+              health -= 1.5 * (NMEs[i].level+1);
               if (diffStatScale == .85) {
                 invincibility = max(15, invincibility); 
               } else if (diffStatScale == .925) {

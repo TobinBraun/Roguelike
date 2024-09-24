@@ -27,10 +27,11 @@ let spawnPosY;
 let NMEs = []; // NME is short for Enemy
 const NMEtypes = ["red", "grey", "blue", "yellow", "black"];
 let bullets = [];
-let xpOrb = [];
+let xpOrbs = [];
 let xp = [0, 1000];
-let xpSpeed = 0;
+const xpSpeed = 5;
 let xpScale = 1;
+let xpRadius = 0;
 let level = 0;
 let score = 0;
 let maxHealth = 3;
@@ -139,6 +140,13 @@ class Bullet {
     this.pierces = pierces;
     this.NMEsHit = [];
   }
+}
+
+class xpOrb {
+  constructor(x, y, value);
+  this.x = x;
+  this.y = y;
+  this.value = value;
 }
 
 function setup() {
@@ -437,7 +445,7 @@ function draw()　{
                 ii--; //decreases ii so that the loop doesn't skip over a bullet because one was deleted
               }
               if (NMEs[i].health <= 0) { //if enemy health is 0
-                xpOrb.push([NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
+                xpOrbs.push(new xpOrb(NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level))); //creates xp orb at the enemy position
                 NMEs.splice(i, 1); //deletes the enemy
                 i--;
                 continue NMELoop;
@@ -460,7 +468,7 @@ function draw()　{
           else if (spike) {
             health = min(maxHealth, health + max(NMEs[i].health*leech, 0));
             NMEs[i].health = 0;
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
+            xpOrbs.push(new xpOrb(NMEs[i].x, NMEs[i].y, 450*Math.pow(15, NMEs[i].level))); //creates xp orb at the enemy position
             NMEs.splice(i, 1); //deletes the enemy
             i--;
             continue NMELoop;
@@ -515,7 +523,7 @@ function draw()　{
             }
           } 
           if (NMEs[i].health <= 0) {
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level)]);
+            xpOrbs.push(new xpOrb(NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level)));
             NMEs.splice(i, 1);
             i--;
           }
@@ -536,7 +544,7 @@ function draw()　{
             else if (spike) {
               health = min(maxHealth, health + max(NMEs[i].health*leech, 0));
               NMEs[i].health = 0;
-              xpOrb.push([NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level)]); //creates xp orb at the enemy position
+              xpOrbs.push(new xpOrb(NMEs[i].x, NMEs[i].y, 500*Math.pow(15, NMEs[i].level))); //creates xp orb at the enemy position
               NMEs.splice(i, 1); //deletes the enemy
               i--;
               continue NMELoop;
@@ -589,7 +597,7 @@ function draw()　{
             }
           } 
           if (NMEs[i].health <= 0) {
-            xpOrb.push([NMEs[i].x, NMEs[i].y, 3000*Math.pow(15, NMEs[i].level)]);
+            xpOrbs.push(new xpOrb(NMEs[i].x, NMEs[i].y, 3000*Math.pow(15, NMEs[i].level)));
             NMEs.splice(i, 1);
             i--;
           }
@@ -629,10 +637,10 @@ function draw()　{
       }
     }
     noStroke();
-    for (i = 0; i < xpOrb.length; i++) { //goes through the list of xp orbs
-      if (xpSpeed > 0) {
-        let x = playerX - xpOrb[i][0];
-        let y = playerY - xpOrb[i][1];
+    for (i = 0; i < xpOrbs.length; i++) { //goes through the list of xp orbs
+      if (xpRadius > 0 && dist(playerX, playerY, xpOrbs[i].x, xpOrbs[i].y) < xpRadius) {
+        let x = playerX - xpOrbs[i].x;
+        let y = playerY - xpOrbs[i].y;
         let angle;
         pos.set(xpSpeed*scaling*delta, 0);
         if (x > 0 && y <= 0) {
@@ -648,19 +656,19 @@ function draw()　{
           angle = atan(y/x);
         }
         pos = pos.rotate(angle); //Math formula to rotate the enemy to move it towards the player
-        xpOrb[i][0] += pos.x;
-        xpOrb[i][1] += pos.y;
+        xpOrbs[i].x += pos.x;
+        xpOrbs[i].y += pos.y;
       }
-      if (playerX+40*scaling > xpOrb[i][0]-10*scaling && playerX-40*scaling < xpOrb[i][0]+10*scaling && playerY+40*scaling > xpOrb[i][1]-10*scaling && playerY-40*scaling < xpOrb[i][1]+10*scaling) { //checks if the player is touching the orb
-        score += xpOrb[i][2]*diffStatScale*xpScale; //increases score, score increases by less if you are playing on an easier difficulty
-        xp[0] += xpOrb[i][2]*xpScale; //increases xp
-        health = min(maxHealth, health + max(xpOrb[i][2]*leech*.05, 0)); //increases health
-        xpOrb.splice(i, 1); //deletes orb
+      if (playerX+40*scaling > xpOrbs[i].x-10*scaling && playerX-40*scaling < xpOrbs[i].x+10*scaling && playerY+40*scaling > xpOrbs[i].y-10*scaling && playerY-40*scaling < xpOrbs[i].y+10*scaling) { //checks if the player is touching the orb
+        score += xpOrbs[i].value*diffStatScale*xpScale; //increases score, score increases by less if you are playing on an easier difficulty
+        xp[0] += xpOrbs[i].value*xpScale; //increases xp
+        health = min(maxHealth, health + max(xpOrbs[i].value*leech*.05, 0)); //increases health
+        xpOrbs.splice(i, 1); //deletes orb
         i--;
       }
       else {
         fill(50, 240, 255);
-        ellipse(xpOrb[i][0], xpOrb[i][1], 20*scaling); //draws xp orb
+        ellipse(xpOrbs[i].x, xpOrbs[i].y, 20*scaling); //draws xp orb
       }
     }
     difficulty = pow(diffscaling, deltaSum); //difficulty increases by diffscaling so that the difficulty goes up exponentially
@@ -878,8 +886,9 @@ function draw()　{
             damage *= 1.5;
             break;
           case 6: //card is magnet
-            xpSpeed += 1.5;
+            //xpSpeed += 1.5;
             xpScale *= 1.25
+            xpRadius += 15;
         }
       }
       chosenCard = null;
@@ -1091,4 +1100,21 @@ function SpawnEnemies() {
     }
   }
     spawnCooldown = random(240/(1+deltaSum/3000), 420/(1+deltaSum/3000)); //sets timer for 4 to 7 seconds and when timer is up this function will be called and more enemies will be spawned
+}
+
+function dist(playerX, playerY, NMEX, NMEY) {
+  var dLat = degreesToRadians(playerY-NMEY);
+  var dLon = degreesToRadians(playerX-NMEX);
+
+  lat1 = degreesToRadians(lat1);
+  lat2 = degreesToRadians(lat2);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  return c;
+}
+
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
 }

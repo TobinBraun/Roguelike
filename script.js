@@ -143,10 +143,11 @@ class Bullet {
 }
 
 class xpOrb {
-  constructor(x, y, value);
-  this.x = x;
-  this.y = y;
-  this.value = value;
+  constructor(x, y, value) {
+    this.x = x;
+    this.y = y;
+    this.value = value;
+  }
 }
 
 function setup() {

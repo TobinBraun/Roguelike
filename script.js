@@ -330,6 +330,11 @@ function draw()　{
     if (keyIsDown(69) && cheatsEnabled){
       xp[0] = xp[1];
     }
+    if (keyIsDown(76)) {
+      for (let i = 0; i < xpOrbs.length; i++) {
+        console.log(dist(playerX, playerY, xpOrbs[i].x, xpOrbs[i].y));
+      }
+    }
     mX = mouseX - width/2 -playerX - (translateX-width/2);
     mY = mouseY - height/2 -playerY - (translateY-height/2);
     if (mX > 0 && mY <= 0) {
@@ -459,7 +464,7 @@ function draw()　{
             if (diffStatScale == .85) {
               invincibility = max(15, invincibility); 
             } else if (diffStatScale == .925) {
-              invincibility = max(5, incivibility);
+              invincibility = max(5, invincibility);
             }
             invincible = true;
             NMEs.splice(i, 1); //deletes the enemy
@@ -858,7 +863,7 @@ function draw()　{
             health *= 5;
             Speed *= .75;
             shootCooldown *= 1.1;
-            damage *= 4;
+            damage *= 5;
             healthScale *= 5;
             break;
           case 2: // card is vampire
@@ -872,7 +877,7 @@ function draw()　{
             bulletsPerShot *= 4;
             shootCooldown *= 3; 
             rounds += 2;
-            damage *= .85;
+            //damage *= .95;
             break;
           case 4: //card is glass cannon
             damage *= 2; //double damage
@@ -889,7 +894,7 @@ function draw()　{
           case 6: //card is magnet
             //xpSpeed += 1.5;
             xpScale *= 1.25
-            xpRadius += 15;
+            xpRadius += 300*scaling;
         }
       }
       chosenCard = null;
@@ -907,16 +912,16 @@ function draw()　{
     {
       if (mouseIsPressed)
       {
-        diffscaling = 1.0002; //Difficulty multiplies by 1.00015 60 times each second
-        diffStatScale = .85; //Multiplies all of the stats of the enemies by .85
+        diffscaling = 1.0003; //Difficulty multiplies by 1.00015 60 times each second
+        diffStatScale = .9; //Multiplies all of the stats of the enemies by .85
       }
     }
     if (mouseX > width/2-424/2*scaling && mouseX < width/2+424/2*scaling && mouseY > height/2-132/2*scaling && mouseY < (height/2+132/2*scaling)) //if medium is chosen
     {
       if (mouseIsPressed)
       {
-        diffscaling = 1.00025;//Difficulty multiplies by 1.0002 60 times each 
-        diffStatScale = .925; //Multiplies all of the stats of the enemies by .9
+        diffscaling = 1.00033;//Difficulty multiplies by 1.0002 60 times each 
+        diffStatScale = .95; //Multiplies all of the stats of the enemies by .9
       }
     }
     if (mouseX < width-25*scaling && mouseX > width-449*scaling && mouseY > height/2-132/2*scaling && mouseY < (height/2+132/2*scaling)) //if hard is chosen
@@ -1104,14 +1109,14 @@ function SpawnEnemies() {
 }
 
 function dist(playerX, playerY, NMEX, NMEY) {
-  var dLat = degreesToRadians(playerY-NMEY);
-  var dLon = degreesToRadians(playerX-NMEX);
+  var dY = degreesToRadians(playerY-NMEY);
+  var dX = degreesToRadians(playerX-NMEX);
 
-  lat1 = degreesToRadians(lat1);
-  lat2 = degreesToRadians(lat2);
+  y1 = degreesToRadians(lat1);
+  y2 = degreesToRadians(lat2);
 
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var a = Math.sin(dY/2) * Math.sin(dY/2) +
+          Math.sin(dX/2) * Math.sin(dX/2) * Math.cos(y1) * Math.cos(y2); 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   return c;
 }
